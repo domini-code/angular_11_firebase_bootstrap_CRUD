@@ -1,3 +1,4 @@
+import { EmployeeFormModule } from './../../../shared/components/employee-form/employee-form.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -9,7 +10,8 @@ import { NewComponent } from './new.component';
   declarations: [NewComponent],
   imports: [
     CommonModule,
-    NewRoutingModule
+    NewRoutingModule,
+    EmployeeFormModule
   ]
 })
 export class NewModule { }
