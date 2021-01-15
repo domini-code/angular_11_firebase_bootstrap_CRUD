@@ -9,14 +9,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="table-info" *ngFor="let item of fakeData">
+      <tr class="table-info" *ngFor="let item of employees$ | async">
         <th scope="row">{{ item.name}} {{item.lastName}}</th>
         <td>{{item.email}}</td>
         <td>{{item.startDate}}</td>
         <td class="bnt-group d-none d-sm-block" role="group">
           <button type="button" class="btn btn-outline-warning m-1" (click)="onGoToEdit(item)">Edit</button>
           <button type="button" class="btn btn-outline-warning m-1" (click)="onGoToSee(item)">See</button>
-          <button type="button" class="btn btn-outline-danger m-1" (click)="onGoToDelete(item)">Delete</button>
+          <button type="button" class="btn btn-outline-danger m-1" (click)="onGoToDelete(item.id)">Delete</button>
         </td>
       </tr>
     </tbody>

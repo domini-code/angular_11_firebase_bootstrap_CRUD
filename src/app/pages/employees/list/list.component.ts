@@ -1,3 +1,4 @@
+import { EmployeesService } from './../employees.service';
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 
@@ -7,40 +8,16 @@ import { NavigationExtras, Router } from '@angular/router';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
+  employees$ = this.employeesSvc.employees;
   navigationExtras: NavigationExtras = {
     state: {
       value: null
     }
   };
 
-  fakeData = [
-    {
-      name: 'Manuel',
-      lastName: 'Pérez',
-      email: 'me@gmail.com',
-      startDate: '01/02/2021'
-    },
-    {
-      name: 'Jose',
-      lastName: 'Jimenez',
-      email: 'me@gmail.com',
-      startDate: '01/02/2021'
-    },
-    {
-      name: 'Maria',
-      lastName: 'Pérez',
-      email: 'me@gmail.com',
-      startDate: '01/02/2021'
-    },
-    {
-      name: 'Bezael',
-      lastName: 'Code',
-      email: 'me@gmail.com',
-      startDate: '01/02/2021'
-    }
-  ];
 
-  constructor(private router: Router) { }
+
+  constructor(private router: Router, private employeesSvc: EmployeesService) { }
 
   ngOnInit(): void {
   }
@@ -55,8 +32,13 @@ export class ListComponent implements OnInit {
     this.router.navigate(['details'], this.navigationExtras);
   }
 
-  onGoToDelete(item: any): void {
-    alert('Deleted');
+  async onGoToDelete(empId: string): Promise<void> {
+    try {
+      await this.employeesSvc.onDeleteEmployees(empId);
+      alert('Deleted');
+    } catch (err) {
+      console.log(err);
+    }
   }
 
 

@@ -1,3 +1,4 @@
+import { EmployeesService } from './../employees.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Employee } from 'src/app/shared/models/employee.interface';
@@ -17,7 +18,7 @@ export class DetailsComponent implements OnInit {
     }
   };
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private employeesSvc: EmployeesService) {
     const navigation = this.router.getCurrentNavigation();
     this.employee = navigation?.extras?.state?.value;
   }
@@ -33,9 +34,16 @@ export class DetailsComponent implements OnInit {
     this.router.navigate(['edit'], this.navigationExtras);
   }
 
-  onDelete(): void {
-    alert('Deleted');
+  async onGoToDelete(): Promise<void> {
+    try {
+      await this.employeesSvc.onDeleteEmployees(this.employee?.id);
+      alert('Deleted');
+      this.onGoBackToList();
+    } catch (err) {
+      console.log(err);
+    }
   }
+
   onGoBackToList(): void {
     this.router.navigate(['list']);
   }

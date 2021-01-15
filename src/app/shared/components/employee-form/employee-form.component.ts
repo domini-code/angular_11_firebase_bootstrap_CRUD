@@ -1,3 +1,4 @@
+import { EmployeesService } from './../../../pages/employees/employees.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,7 +16,7 @@ export class EmployeeFormComponent implements OnInit {
 
   private isEmail = /\S+@\S+\.\S+/;
 
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(private router: Router, private fb: FormBuilder, private employeesSvc: EmployeesService) {
     const navigation = this.router.getCurrentNavigation();
     this.employee = navigation?.extras?.state?.value;
     this.initForm();
@@ -31,10 +32,23 @@ export class EmployeeFormComponent implements OnInit {
 
   onSave(): void {
     console.log('Saved', this.employeeForm.value);
+    if (this.employeeForm.valid) {
+      const employee = this.employeeForm.value;
+      const employeeId = this.employee?.id || null;
+      this.employeesSvc.onSaveEmployee(employee, employeeId);
+      this.employeeForm.reset();
+    }
+
   }
 
   onGoBackToList(): void {
     this.router.navigate(['list']);
+  }
+
+  isValidField(field: string): string {
+    const validatedField = this.employeeForm.get(field);
+    return (!validatedField.valid && validatedField.touched)
+      ? 'is-invalid' : validatedField.touched ? 'is-valid' : '';
   }
 
   private initForm(): void {
